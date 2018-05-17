@@ -13,7 +13,7 @@ struct _BOOKINGREQUEST {
 	int release_time;			// determines the times when put into the scenario
 	int earliest_dept_time;		// earliest departure time specified by customer
 	int willingness_to_pay;		// maximal willingness to pay of customer
-
+	int ausgang;
 
 	// ToDo: eventuelle neue Datenelemente
 
