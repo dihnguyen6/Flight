@@ -1,7 +1,7 @@
 // needed to use own functions defined in global.cpp
 #include "scenario.h"
 #include <iostream>
-
+#include <math.h>
 
 _SCENARIO::_SCENARIO(int _SimStartTime, int _SimEndTime, int _IntMedArrTime)
 {
@@ -30,7 +30,7 @@ _SCENARIO::_SCENARIO(int _SimStartTime, int _SimEndTime, int _IntMedArrTime)
 
 
 	// ToDo: Initialisierung eventuell neuer Datenelemente
-	requestArr = nullptr;
+	*requestArr = NULL;
 }
 
 _SCENARIO::~_SCENARIO()
@@ -95,7 +95,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 	cout << "Hallo";
 	// ToDo: (eventuell) dynamischen belegten Speicher freigeben + neu reservieren 
 	clear();
-	requestArr = new _BOOKINGREQUEST[10000];
+	*requestArr = new _BOOKINGREQUEST [10000];
 
 
 	while (this->CurrentSimTime < this->SimEndTime)
@@ -358,7 +358,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 		
 
 		// ToDo: wenn alles erledigt ist BR abspeichern (in Array)
-		requestArr[requests] = BR;
+		*requestArr[requests] = BR;
 	}
 
 

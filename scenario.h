@@ -27,7 +27,7 @@ public:
 
 								
 	// potenzielle neue Datenelemente:
-	_BOOKINGREQUEST *requestArr[];
+	_BOOKINGREQUEST *requestArr;
 
 
 	
