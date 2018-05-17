@@ -1,5 +1,6 @@
-﻿#include "flightplan.h"
+#include "flightplan.h"
 
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -18,7 +19,7 @@ _FLIGHTPLAN::_FLIGHTPLAN(char _flightplanname[256], int _number_of_flights)
 	// this is the constructor used for a _FLIGHTPLAN_NEW object
 	// initialize the attributes
 	this->flights = _number_of_flights;
-	strcpy_s(this->flightplanname, _flightplanname);
+	strcpy(this->flightplanname, _flightplanname);
 	
 	// reserve memory for the flights to be saved
 	FLIGHTLEG = new _FLIGHTLEG[this->flights];
