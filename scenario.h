@@ -27,7 +27,7 @@ public:
 
 								
 	// potenzielle neue Datenelemente:
-
+	_BOOKINGREQUEST *requestArr[];
 
 
 	
@@ -46,6 +46,8 @@ public:
 
 	// this function returns the time until the next booking request arrival. It randomly draws this  time offset value
 	static int DrawTimeUntilNextRequest(int _MeanValue);
+
+
 };
 
 #endif // SCENARIO_H

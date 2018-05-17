@@ -30,11 +30,13 @@ _SCENARIO::_SCENARIO(int _SimStartTime, int _SimEndTime, int _IntMedArrTime)
 
 
 	// ToDo: Initialisierung eventuell neuer Datenelemente
+	requestArr = nullptr;
 }
 
 _SCENARIO::~_SCENARIO()
 {
 	// bisher nichts zu tun
+	clear();
 }
 
 
@@ -92,7 +94,8 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 
 	cout << "Hallo";
 	// ToDo: (eventuell) dynamischen belegten Speicher freigeben + neu reservieren 
-
+	clear();
+	requestArr = new _BOOKINGREQUEST[10000];
 
 
 	while (this->CurrentSimTime < this->SimEndTime)
@@ -114,7 +117,6 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 		if ((BR.dept_airp != "DRS") && (BR.dest_airp != "DRS"))
 		{
 			// here we start with part (B) for ONE-STOP-CONNECTIONS
-
 			// identify available connections
 			int **CONNECTION;
 			CONNECTION = new int*[FLIGHTPLAN->flights];
@@ -151,7 +153,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 			}
 			// here part (B) with ONE-STOP-CONNECTIONS ends
 
-			// now we start part (C) of ONE-STOP-CONNECTIONS 
+			// now we start part (C) of ONE-STOP-CONNECTIONS
 			int best_fare_i = -1, best_fare_j = -1;
 			double best_fare_dist = 1000000;
 			double draw_value;
@@ -183,6 +185,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 								// now start bargaining about sale of ticket
 								if (CONNECTION[i][j] < BR.willingness_to_pay)
 								{
+									BR.ausgang = 2;
 									cout << " TICKET SOLD IMMEDIATELY" << endl;
 									this->immediate_acceptance += 2;
 									this->revenues += CONNECTION[i][j];
@@ -196,6 +199,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 
 									if (draw_value < (0.5 * this->CurrentSimTime) / this->SimEndTime)
 									{
+										BR.ausgang = 3;
 										cout << " ticket finally sold after bargaining\n" << endl;
 										this->bargained_accepance += 2;
 										this->revenues += CONNECTION[i][j];
@@ -204,6 +208,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 									}
 									else
 									{
+										BR.ausgang = 4;
 										cout << "Customer does not buy the ticket :-(\n";
 									}
 								}
@@ -214,6 +219,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 			}
 			else
 			{
+				BR.ausgang = 1;
 				//printf("----- ONE-STOP-CONNECTING-FLIGHTS: -------------\n");
 				cout << " no flights available\n";
 			}
@@ -285,6 +291,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 							// now start bargaining about sale of ticket
 							if (CONNECTION[i] < BR.willingness_to_pay)
 							{
+								BR.ausgang = 2;
 								cout << " TICKET SOLD IMMEDIATELY" << endl;
 								this->immediate_acceptance++;
 								this->revenues += CONNECTION[i];
@@ -301,6 +308,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 
 								if (draw_value < (0.5 * this->CurrentSimTime) / this->SimEndTime)
 								{
+									BR.ausgang = 3;
 									cout << " ticket finally sold after bargaining\n";
 									this->bargained_accepance++;
 									this->revenues += CONNECTION[i];
@@ -308,6 +316,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 								}
 								else
 								{
+									BR.ausgang = 4;
 									cout << " Customer does not buy the ticket :-(\n";
 									this->bargainned_decline++;
 								}
@@ -319,6 +328,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 
 			else
 			{
+				BR.ausgang = 1;
 				//printf("----- NON-STOP-CONNECTING-FLIGHTS: -------------\n");
 				cout << " no flights available\n";
 			}
@@ -348,6 +358,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 		
 
 		// ToDo: wenn alles erledigt ist BR abspeichern (in Array)
+		requestArr[requests] = BR;
 	}
 
 
@@ -366,9 +377,19 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 void _SCENARIO::clear()
 {
 	// ToDo: dynamisch belegten Speicher wieder frei geben
+	if(requestArr != nullptr) {
+		delete [] requestArr;
+	}
 }
 
 void _SCENARIO::print(int status)
 {
 	// ToDo: Ausgabe aller generierten Buchungsanfragen gefiltert nach dem Kriterium "status"
+	if(requestArr != nullptr) {
+		for(int i = 0; i < 10000; i++) {
+			if(requestArr[i]->ausgang == status) {
+				requestArr[i]->print();
+			}
+		}
+	}
 }

@@ -9,6 +9,8 @@ int main()
 	_SCENARIO scenario(0, 1440 * 15, 15);
 
 	scenario.ExecuteSim(&flightplan);
+
+	scenario.print(2);
 }
 
 

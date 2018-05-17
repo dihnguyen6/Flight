@@ -70,15 +70,37 @@ _BOOKINGREQUEST::_BOOKINGREQUEST(_FLIGHTPLAN *_FP, int _Release_Time)
 
 	// ToDo: Initialisierung eventuell neuer Datenelemente
 
+    this->ausgang = 0;
+
 }
 
 void _BOOKINGREQUEST::print()
 {
+    cout << dept_airp << " - " << dest_airp << endl;
+    cout << release_time << endl;
+
 	// ToDo: geschalten Sie eine Ausgabe
+    if(ausgang == 0) {
+        aux = "unbearbeitet";
+        cout << aux;
+    } else if (ausgang == 1) {
+        aux = "nichtVerfuegbar";
+        cout << aux;
+    } else if (ausgang == 2) {
+        aux = "verkaufSofort";
+        cout << aux;
+    } else if (ausgang == 3) {
+        aux = "verkaufVerhandlung";
+        cout << aux;
+    } else if (ausgang == 4) {
+        aux = "abgelehnt";
+        cout << aux;
+    }
+    cout << endl;
 }
 
 _BOOKINGREQUEST::_BOOKINGREQUEST()
-	: dest_airp(""), dept_airp(""), release_time(-1), willingness_to_pay(0), earliest_dept_time(0)
+	: dest_airp(""), dept_airp(""), release_time(-1), willingness_to_pay(0), earliest_dept_time(0), ausgang(0)
 {
 	// ToDo: Initialisierung eventuell neuer Datenelemente
 }
