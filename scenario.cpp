@@ -30,7 +30,7 @@ _SCENARIO::_SCENARIO(int _SimStartTime, int _SimEndTime, int _IntMedArrTime)
 
 
 	// ToDo: Initialisierung eventuell neuer Datenelemente
-	*requestArr = NULL;
+	requestArr = NULL;
 }
 
 _SCENARIO::~_SCENARIO()
@@ -95,13 +95,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 	cout << "Hallo" << endl;
 	// ToDo: (eventuell) dynamischen belegten Speicher freigeben + neu reservieren 
 	clear();
-	*requestArr = new _BOOKINGREQUEST [10000];
-	
-	for (int i = 0; i< 10; ++i)
-	{
-		cout << &requestArr[i] << endl;
-	}
-
+	requestArr = new _BOOKINGREQUEST [10000];
 
 	while (this->CurrentSimTime < this->SimEndTime)
 	{
@@ -363,15 +357,7 @@ void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN)
 		
 
 		// ToDo: wenn alles erledigt ist BR abspeichern (in Array)
-		cout << requestArr[requests - 1] << endl;
-		requestArr[requests - 1]->print();
-		requestArr[requests - 1]->ausgang = BR.ausgang;
-		requestArr[requests - 1]->aux = BR.aux;
-		requestArr[requests - 1]->dept_airp = BR.dept_airp;
-		requestArr[requests - 1]->dest_airp = BR.dest_airp;
-		requestArr[requests - 1]->earliest_dept_time = BR.earliest_dept_time;
-		requestArr[requests - 1]->release_time = BR.release_time;
-		requestArr[requests - 1]->willingness_to_pay = BR.willingness_to_pay;
+		requestArr[requests - 1] = BR;
 		//requestArr[requests - 1]->print();
 	}
 
@@ -401,8 +387,8 @@ void _SCENARIO::print(int status)
 	// ToDo: Ausgabe aller generierten Buchungsanfragen gefiltert nach dem Kriterium "status"
 	if(requestArr != nullptr) {
 		for(int i = 0; i < 10000; i++) {
-			if(requestArr[i]->ausgang == status) {
-				requestArr[i]->print();
+			if(requestArr[i].ausgang == status) {
+				requestArr[i].print();
 			}
 		}
 	}

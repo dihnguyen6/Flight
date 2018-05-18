@@ -37,7 +37,7 @@ public:
 	~_SCENARIO();
 
 	// this function initiates the execution of the simulation minicing time progress
-	void _SCENARIO::ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN);
+	void ExecuteSim(_FLIGHTPLAN *FLIGHTPLAN);
 
 	// vorbereite Methoden für die Klausuren
 	void clear();
